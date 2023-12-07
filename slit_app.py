@@ -4,12 +4,12 @@ import numpy as np
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 
-
 # Load the trained model
 model = tf.keras.models.load_model('handwritten.model')
+
 # Streamlit app
-st.title("Digit Recognition App")
-st.write("Draw in center")
+st.markdown("<h1 style='text-align: center; color: black;'>Hand Written Digit Recognition</h1>", unsafe_allow_html=True)
+st.write("Fill the canvas, draw in the center")
 
 # Specify canvas parameters in the application
 drawing_mode = "freedraw"  # Set drawing mode to freedraw
@@ -25,14 +25,14 @@ canvas_result = st_canvas(
     stroke_color=stroke_color,
     background_color=bg_color,
     update_streamlit=realtime_update,
-    height=300,
-    width= 300,
+    height=250,
+    width=250,
     drawing_mode=drawing_mode,
     key="canvas",
 )
 
-# Add a "Recognize" button
-if st.button("Recognize"):
+# Add a "Recognize" button with styling
+if st.button("Recognize", key="recognize_button", help="Click to recognize the digit"):
     # Convert the canvas image to NumPy array
     image_array = np.array(canvas_result.image_data)
 
@@ -43,5 +43,5 @@ if st.button("Recognize"):
     prediction = model.predict(img_array)
     predicted_class = np.argmax(prediction)
 
-    # Display the prediction
-    st.write(f"Prediction: {predicted_class}", font=("arial", 72, "Italic"))
+    # Display the prediction with improved formatting
+    st.subheader(f"Prediction Result: **{predicted_class}**")
